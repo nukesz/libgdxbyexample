@@ -1,12 +1,11 @@
 package com.github.nukesz.screens
 
-import ktx.app.KtxScreen
-import ktx.app.clearScreen
+import com.github.nukesz.LibGDXbyExample
+import com.github.nukesz.samples.BaseScreen
 
-class InitScreen : KtxScreen {
-
+class InitScreen(game: LibGDXbyExample) : BaseScreen(game) {
 
     override fun render(delta: Float) {
-        clearScreen(1f, 1f, 1f, 0f)
+        renderGui(delta)
     }
 }

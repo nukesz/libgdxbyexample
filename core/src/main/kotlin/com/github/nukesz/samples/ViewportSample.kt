@@ -8,14 +8,14 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.utils.ArrayMap
 import com.badlogic.gdx.utils.viewport.*
+import com.github.nukesz.LibGDXbyExample
 import com.github.nukesz.graphics.clearScreen
 import ktx.app.KtxInputAdapter
-import ktx.app.KtxScreen
 import ktx.assets.toInternalFile
 import ktx.graphics.LetterboxingViewport
 import ktx.log.logger
 
-class ViewportSample : KtxScreen, KtxInputAdapter {
+class ViewportSample(game: LibGDXbyExample) : BaseScreen(game), KtxInputAdapter {
 
     companion object {
         private var log = logger<ViewportSample>()
@@ -43,11 +43,14 @@ class ViewportSample : KtxScreen, KtxInputAdapter {
         texture = Texture("raw/level-bg.png".toInternalFile())
         font = BitmapFont("fonts/oswald-32.fnt".toInternalFile())
 
-
         createViewports()
         selectNextViewport()
+    }
 
-         Gdx.input.inputProcessor = this
+    override fun show() {
+        super.show()
+        println("Show ViewportSample")
+        multiplexer.addProcessor(this)
     }
 
     private fun createViewports() {
@@ -74,13 +77,13 @@ class ViewportSample : KtxScreen, KtxInputAdapter {
 
     override fun render(delta: Float) {
         clearScreen()
-
         batch.projectionMatrix = camera.combined
         batch.begin()
 
         draw()
 
         batch.end()
+        renderGui(delta)
     }
 
     private fun draw() {
@@ -93,7 +96,12 @@ class ViewportSample : KtxScreen, KtxInputAdapter {
         return false
     }
 
+    override fun hide() {
+        multiplexer.removeProcessor(this)
+    }
+
     override fun dispose() {
+        super.dispose()
         batch.dispose()
         texture.dispose()
         font.dispose()
