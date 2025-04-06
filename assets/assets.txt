@@ -1,9 +1,14 @@
-i:b:/libgdx.png:2458:1
 i:d:/raw:0:1
 i:b:/raw/level-bg.png:68874:1
+i:b:/uiskin.atlas:2894:1
+i:b:/uiskin.png:22779:1
+i:b:/uiskin.json:2986:1
+i:b:/default.png:26179:1
 i:d:/fonts:0:1
-i:b:/fonts/oswald-32.png:14484:1
 i:b:/fonts/oswald-32.fnt:11584:1
+i:b:/fonts/oswald-32.png:14484:1
+i:b:/default.fnt:11527:1
+i:b:/libgdx.png:2458:1
 c:b:/com/badlogic/gdx/utils/lsans-15.png:10270:1
 c:b:/com/badlogic/gdx/graphics/g3d/shaders/default.vertex.glsl:9096:1
 c:b:/com/badlogic/gdx/graphics/g3d/particles/particles.fragment.glsl:820:1
