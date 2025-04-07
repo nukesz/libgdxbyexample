@@ -1,9 +1,6 @@
 package com.github.nukesz
 
-import com.github.nukesz.samples.Basic3DSample
-import com.github.nukesz.samples.LightsAndShadowsSample
-import com.github.nukesz.samples.ViewportSample
-import com.github.nukesz.samples.InitScreen
+import com.github.nukesz.samples.*
 import ktx.app.KtxGame
 import ktx.app.KtxScreen
 
@@ -14,8 +11,9 @@ class LibGDXbyExample : KtxGame<KtxScreen>() {
         addScreen(ViewportSample(this))
         addScreen(LightsAndShadowsSample(this))
         addScreen(Basic3DSample(this))
+        addScreen(Ship3DModelSample(this))
 
-        setScreen<LightsAndShadowsSample>()
+        setScreen<Ship3DModelSample>()
     }
 
      fun getScreenNames() = screens.map { it.key.simpleName }
