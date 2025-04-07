@@ -45,7 +45,7 @@ class Ship3DModelSample(game: LibGDXbyExample) : BaseScreen(game) {
         setupInputProcessor(camController)
 
         assets = AssetManager()
-        assets.load("ship/ship.obj", Model::class.java)
+        assets.load("ship/ship.g3db", Model::class.java)
         loading = true
     }
 
@@ -72,7 +72,7 @@ class Ship3DModelSample(game: LibGDXbyExample) : BaseScreen(game) {
     }
 
     private fun doneLoading() {
-        val ship = assets.get("ship/ship.obj", Model::class.java)
+        val ship = assets.get("ship/ship.g3db", Model::class.java)
         for (x in -5..5 step 2) {
             for (z in -5..5 step 2) {
                 val instance = ModelInstance(ship)
