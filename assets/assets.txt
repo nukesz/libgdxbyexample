@@ -9,6 +9,11 @@ i:b:/fonts/oswald-32.fnt:11584:1
 i:b:/fonts/oswald-32.png:14484:1
 i:b:/default.fnt:11527:1
 i:b:/libgdx.png:2458:1
+i:d:/ship:0:1
+i:b:/ship/ship.png:35161:1
+i:b:/ship/ship.obj:16608:1
+i:b:/ship/ship.g3db:8349:1
+i:b:/ship/ship.mtl:102:1
 c:b:/com/badlogic/gdx/utils/lsans-15.png:10270:1
 c:b:/com/badlogic/gdx/graphics/g3d/shaders/default.vertex.glsl:9096:1
 c:b:/com/badlogic/gdx/graphics/g3d/particles/particles.fragment.glsl:820:1
