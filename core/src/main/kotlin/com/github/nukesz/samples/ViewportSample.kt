@@ -49,8 +49,7 @@ class ViewportSample(game: LibGDXbyExample) : BaseScreen(game), KtxInputAdapter 
 
     override fun show() {
         super.show()
-        println("Show ViewportSample")
-        multiplexer.addProcessor(this)
+        setupInputProcessor(this)
     }
 
     private fun createViewports() {
@@ -94,10 +93,6 @@ class ViewportSample(game: LibGDXbyExample) : BaseScreen(game), KtxInputAdapter 
     override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
         selectNextViewport()
         return false
-    }
-
-    override fun hide() {
-        multiplexer.removeProcessor(this)
     }
 
     override fun dispose() {

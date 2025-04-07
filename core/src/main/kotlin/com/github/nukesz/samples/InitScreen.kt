@@ -1,7 +1,6 @@
-package com.github.nukesz.screens
+package com.github.nukesz.samples
 
 import com.github.nukesz.LibGDXbyExample
-import com.github.nukesz.samples.BaseScreen
 
 class InitScreen(game: LibGDXbyExample) : BaseScreen(game) {
 
