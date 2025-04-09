@@ -7,23 +7,22 @@ import com.badlogic.gdx.math.Intersector
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.utils.viewport.ScreenViewport
+import com.badlogic.gdx.utils.viewport.Viewport
 import com.github.nukesz.LibGDXbyExample
 
 
 class LightsAndShadowsSample(game: LibGDXbyExample): BaseScreen(game) {
 
-    private var camera: OrthographicCamera? = null
-    private var shapeRenderer: ShapeRenderer? = null
-    private lateinit var lightSource: Vector2
+    private val camera: OrthographicCamera = OrthographicCamera(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
+    private val viewport = ScreenViewport(camera)
+    private val shapeRenderer: ShapeRenderer = ShapeRenderer()
+    private val lightSource: Vector2 = Vector2(Gdx.graphics.width / 2f, Gdx.graphics.height / 2f)
     private var boxes: MutableList<Rectangle> = ArrayList()
 
     init {
-        camera = OrthographicCamera(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
-        shapeRenderer = ShapeRenderer()
-        lightSource = Vector2(Gdx.graphics.width / 2f, Gdx.graphics.height / 2f)
-        println("lightSource = ${lightSource}")
         // Generate random boxes
-        val boxCount = MathUtils.random(5, 10) // Random number of boxes
+        val boxCount = MathUtils.random(5, 10)
         for (i in 0 until boxCount) {
             val x = MathUtils.random(50, Gdx.graphics.width - 100).toFloat()
             val y = MathUtils.random(50, Gdx.graphics.height - 100).toFloat()
@@ -33,27 +32,27 @@ class LightsAndShadowsSample(game: LibGDXbyExample): BaseScreen(game) {
     }
 
     override fun render(delta: Float)  {
-        shapeRenderer!!.projectionMatrix = camera!!.combined
+        shapeRenderer.projectionMatrix = camera.combined
 
         // Draw Boxes
-        shapeRenderer!!.begin(ShapeRenderer.ShapeType.Filled)
-        shapeRenderer!!.setColor(0.3f, 0.3f, 0.3f, 1f) // Dark gray for obstacles
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
+        shapeRenderer.setColor(0.3f, 0.3f, 0.3f, 1f) // Dark gray for obstacles
         for (box in boxes) {
-            shapeRenderer!!.rect(box.x, box.y, box.width, box.height)
+            shapeRenderer.rect(box.x, box.y, box.width, box.height)
         }
-        shapeRenderer!!.end()
+        shapeRenderer.end()
 
         // Cast rays and draw light & shadows
-        shapeRenderer!!.begin(ShapeRenderer.ShapeType.Filled)
-        shapeRenderer!!.setColor(1f, 1f, 0f, 0.3f) // Semi-transparent yellow for light
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
+        shapeRenderer.setColor(1f, 1f, 0f, 0.3f) // Semi-transparent yellow for light
         castLightRays()
-        shapeRenderer!!.end()
+        shapeRenderer.end()
 
         // Draw light source (Sun)
-        shapeRenderer!!.begin(ShapeRenderer.ShapeType.Filled)
-        shapeRenderer!!.setColor(1f, 1f, 0f, 1f)
-        shapeRenderer!!.circle(lightSource!!.x, lightSource!!.y, 20f)
-        shapeRenderer!!.end()
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
+        shapeRenderer.setColor(1f, 1f, 0f, 1f)
+        shapeRenderer.circle(lightSource.x, lightSource.y, 20f)
+        shapeRenderer.end()
 
         renderGui(delta)
     }
@@ -65,8 +64,8 @@ class LightsAndShadowsSample(game: LibGDXbyExample): BaseScreen(game) {
         for (i in 0 until rayCount) {
             val angle = Math.toRadians(i.toDouble()).toFloat()
             val rayEnd = Vector2(
-                lightSource!!.x + MathUtils.cos(angle) * maxDist,
-                lightSource!!.y + MathUtils.sin(angle) * maxDist
+                lightSource.x + MathUtils.cos(angle) * maxDist,
+                lightSource.y + MathUtils.sin(angle) * maxDist
             )
 
             var closestIntersection: Vector2? = null
@@ -86,7 +85,7 @@ class LightsAndShadowsSample(game: LibGDXbyExample): BaseScreen(game) {
 
                     val intersection = Vector2()
                     if (Intersector.intersectSegments(lightSource, rayEnd, start, end, intersection)) {
-                        val dist = lightSource!!.dst(intersection)
+                        val dist = lightSource.dst(intersection)
                         if (dist < minDist) {
                             minDist = dist
                             closestIntersection = intersection
@@ -96,8 +95,8 @@ class LightsAndShadowsSample(game: LibGDXbyExample): BaseScreen(game) {
             }
 
             if (closestIntersection != null) {
-                shapeRenderer!!.triangle(
-                    lightSource!!.x, lightSource!!.y,
+                shapeRenderer.triangle(
+                    lightSource.x, lightSource.y,
                     closestIntersection.x, closestIntersection.y,
                     rayEnd.x, rayEnd.y
                 )
@@ -105,8 +104,12 @@ class LightsAndShadowsSample(game: LibGDXbyExample): BaseScreen(game) {
         }
     }
 
+    override fun resize(width: Int, height: Int) {
+        viewport.update(width, height, true)
+    }
+
     override fun dispose() {
         super.dispose()
-        shapeRenderer!!.dispose()
+        shapeRenderer.dispose()
     }
 }
