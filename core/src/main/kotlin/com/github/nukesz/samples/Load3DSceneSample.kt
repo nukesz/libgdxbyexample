@@ -15,7 +15,7 @@ import com.github.nukesz.LibGDXbyExample
 import com.github.nukesz.graphics.clearScreen
 
 
-class Ship3DModelSample(game: LibGDXbyExample) : BaseScreen(game) {
+class Load3DSceneSample(game: LibGDXbyExample) : BaseScreen(game) {
 
     private lateinit var cam: PerspectiveCamera
     private lateinit var camController: CameraInputController
@@ -35,7 +35,7 @@ class Ship3DModelSample(game: LibGDXbyExample) : BaseScreen(game) {
 
         modelBatch = ModelBatch()
         cam = PerspectiveCamera(67f, Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
-        cam.position.set(7f, 7f, 7f)
+        cam.position.set(0f, 7f, 7f)
         cam.lookAt(0f, 0f, 0f)
         cam.near = 1f
         cam.far = 300f
@@ -45,7 +45,10 @@ class Ship3DModelSample(game: LibGDXbyExample) : BaseScreen(game) {
         setupInputProcessor(camController)
 
         assets = AssetManager()
-        assets.load("ship/ship.g3db", Model::class.java)
+        assets.load("scene/ship.obj", Model::class.java)
+        assets.load("scene/block.obj", Model::class.java)
+        assets.load("scene/invader.obj", Model::class.java)
+        assets.load("scene/spacesphere.obj", Model::class.java)
         loading = true
     }
 
@@ -61,25 +64,16 @@ class Ship3DModelSample(game: LibGDXbyExample) : BaseScreen(game) {
 
         modelBatch.begin(cam)
         for (instance in modelInstances) {
-            instance.transform.rotate(Vector3(0f, 1f, 0f), 20f * delta)
             modelBatch.render(instance, environment)
         }
         modelBatch.end()
-
-
-
         renderGui(delta)
     }
 
     private fun doneLoading() {
-        val ship = assets.get("ship/ship.g3db", Model::class.java)
-        for (x in -5..5 step 2) {
-            for (z in -5..5 step 2) {
-                val instance = ModelInstance(ship)
-                instance.transform.setToTranslation(x.toFloat(), 0f, z.toFloat())
-                modelInstances.add(instance)
-            }
-        }
+        val ship = ModelInstance(assets.get("scene/ship.obj", Model::class.java))
+        ship.transform.setToRotation(Vector3.Y, 180f).trn(0f, 0f, 6f)
+        modelInstances.add(ship)
         loading = false
     }
 
