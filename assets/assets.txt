@@ -1,7 +1,15 @@
 i:d:/scene:0:1
+i:b:/scene/ship.png:35161:1
 i:b:/scene/ship.obj:16608:1
+i:b:/scene/space.jpg:167005:1
+i:b:/scene/invaderscene.g3db:36621:1
 i:b:/scene/spacesphere.obj:52232:1
+i:b:/scene/invader.png:57659:1
+i:b:/scene/ship.mtl:102:1
+i:b:/scene/block.mtl:99:1
+i:b:/scene/spacesphere.mtl:105:1
 i:b:/scene/invader.obj:8826:1
+i:b:/scene/invader.mtl:107:1
 i:b:/scene/block.obj:2096:1
 i:d:/raw:0:1
 i:b:/raw/level-bg.png:68874:1
