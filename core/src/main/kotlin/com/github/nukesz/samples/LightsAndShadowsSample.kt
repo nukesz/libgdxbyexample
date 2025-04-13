@@ -105,6 +105,7 @@ class LightsAndShadowsSample(game: LibGDXbyExample): BaseScreen(game) {
     }
 
     override fun resize(width: Int, height: Int) {
+        super.resize(width, height)
         viewport.update(width, height, true)
     }
 

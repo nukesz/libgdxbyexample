@@ -71,6 +71,7 @@ class ViewportSample(game: LibGDXbyExample) : BaseScreen(game), KtxInputAdapter 
     }
 
     override fun resize(width: Int, height: Int) {
+        super.resize(width, height)
         currentViewport.update(width, height, true)
     }
 
