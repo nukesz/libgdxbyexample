@@ -23,12 +23,14 @@ open class BaseScreen(private val game: LibGDXbyExample): KtxScreen {
     private val multiplexer: InputMultiplexer
     private lateinit var selectBox: SelectBox<String>
     private var fpsLabel: Label
+    private var visibleCountLabel: Label
 
     init {
         stage = Stage(ScreenViewport())
         multiplexer = InputMultiplexer()
         skin = Skin(Gdx.files.internal("uiskin.json"))
         fpsLabel = Label("0", skin)
+        visibleCountLabel = Label("0", skin)
     }
 
     override fun show() {
@@ -53,10 +55,16 @@ open class BaseScreen(private val game: LibGDXbyExample): KtxScreen {
         table.setFillParent(true)
         table.add(selectBox)
         table.add(fpsLabel)
+        table.add(visibleCountLabel)
         stage.addActor(table)
     }
 
-    protected fun renderGui(delta: Float) {
+    protected fun renderGui(delta: Float, visibleCount: Int = 0) {
+        if (visibleCount > 0) {
+            visibleCountLabel.setText("Visible: $visibleCount")
+        } else {
+            visibleCountLabel.setText("")
+        }
         fpsLabel.setText("FPS: ${Gdx.graphics.framesPerSecond}")
         stage.act(delta)
         stage.draw()
