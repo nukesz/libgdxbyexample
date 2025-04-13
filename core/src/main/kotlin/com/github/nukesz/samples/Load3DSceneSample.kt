@@ -23,6 +23,10 @@ class Load3DSceneSample(game: LibGDXbyExample) : BaseScreen(game) {
     private lateinit var modelBatch: ModelBatch
     private lateinit var assets: AssetManager
     private val modelInstances = mutableListOf<ModelInstance>()
+    private val blockInstances = mutableListOf<ModelInstance>()
+    private val invaderInstances = mutableListOf<ModelInstance>()
+    private var space: ModelInstance? = null
+    private var ship: ModelInstance? = null
     private var loading = false
 
     override fun show() {
@@ -45,10 +49,7 @@ class Load3DSceneSample(game: LibGDXbyExample) : BaseScreen(game) {
         setupInputProcessor(camController)
 
         assets = AssetManager()
-        assets.load("scene/ship.obj", Model::class.java)
-        assets.load("scene/block.obj", Model::class.java)
-        assets.load("scene/invader.obj", Model::class.java)
-        assets.load("scene/spacesphere.obj", Model::class.java)
+        assets.load("scene/invaderscene.g3db", Model::class.java)
         loading = true
     }
 
@@ -66,14 +67,41 @@ class Load3DSceneSample(game: LibGDXbyExample) : BaseScreen(game) {
         for (instance in modelInstances) {
             modelBatch.render(instance, environment)
         }
+        if (space != null) {
+            modelBatch.render(space)
+        }
         modelBatch.end()
         renderGui(delta)
     }
 
     private fun doneLoading() {
-        val ship = ModelInstance(assets.get("scene/ship.obj", Model::class.java))
-        ship.transform.setToRotation(Vector3.Y, 180f).trn(0f, 0f, 6f)
-        modelInstances.add(ship)
+        val model = assets.get("scene/invaderscene.g3db", Model::class.java)
+        for (i in 0 until model.nodes.size) {
+            val id = model.nodes[i].id
+            val instance = ModelInstance(model, id)
+            val node = instance.getNode(id)
+
+            instance.transform.set(node.globalTransform)
+            node.translation.set(0f, 0f, 0f)
+            node.scale.set(1f, 1f, 1f)
+            node.rotation.idt()
+            instance.calculateTransforms()
+
+            if (id == "space") {
+                space = instance
+                continue
+            }
+
+            modelInstances.add(instance)
+
+            if (id == "ship") {
+                ship = instance
+            } else if (id.startsWith("block")) {
+                blockInstances.add(instance)
+            } else if (id.startsWith("invader")) {
+                invaderInstances.add(instance)
+            }
+        }
         loading = false
     }
 
@@ -81,5 +109,7 @@ class Load3DSceneSample(game: LibGDXbyExample) : BaseScreen(game) {
         modelBatch.dispose()
         assets.dispose()
         modelInstances.clear()
+        blockInstances.clear()
+        invaderInstances.clear()
     }
 }
