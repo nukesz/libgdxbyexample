@@ -13,11 +13,12 @@ class LibGDXbyExample : KtxGame<KtxScreen>() {
         addScreen(Basic3DSample(this))
         addScreen(Ship3DModelSample(this))
         addScreen(Load3DSceneSample(this))
+        addScreen(DragStageActorSample(this))
 
         setScreen<Load3DSceneSample>()
     }
 
-     fun getScreenNames() = screens.map { it.key.simpleName }
+    fun getScreenNames() = screens.map { it.key.simpleName }
 
     fun changeScreen(screenName: String) {
         val first = screens.first {
