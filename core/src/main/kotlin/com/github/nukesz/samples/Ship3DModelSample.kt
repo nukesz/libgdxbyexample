@@ -84,8 +84,12 @@ class Ship3DModelSample(game: LibGDXbyExample) : BaseScreen(game) {
     }
 
     override fun dispose() {
-        modelBatch.dispose()
-        assets.dispose()
+        if (::modelBatch.isInitialized) {
+            modelBatch.dispose()
+        }
+        if (::assets.isInitialized) {
+            assets.dispose()
+        }
         modelInstances.clear()
     }
 }

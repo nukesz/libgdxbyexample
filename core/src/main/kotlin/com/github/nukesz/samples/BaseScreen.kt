@@ -16,28 +16,19 @@ import com.github.nukesz.LibGDXbyExample
 import ktx.app.KtxScreen
 import ktx.collections.toGdxArray
 
-open class BaseScreen(private val game: LibGDXbyExample): KtxScreen {
+open class BaseScreen(private val game: LibGDXbyExample) : KtxScreen {
 
-    private val stage: Stage
-    private val skin: Skin
-    private val multiplexer: InputMultiplexer
-    private lateinit var selectBox: SelectBox<String>
-    private var fpsLabel: Label
-    private var visibleCountLabel: Label
-
-    init {
-        stage = Stage(ScreenViewport())
-        multiplexer = InputMultiplexer()
-        skin = Skin(Gdx.files.internal("uiskin.json"))
-        fpsLabel = Label("0", skin)
-        visibleCountLabel = Label("0", skin)
-    }
+    private val stage: Stage by lazy { Stage(ScreenViewport()) }
+    private val skin: Skin by lazy { Skin(Gdx.files.internal("uiskin.json")) }
+    private val multiplexer: InputMultiplexer by lazy { InputMultiplexer() }
+    private val selectBox: SelectBox<String> by lazy { SelectBox(skin) }
+    private val fpsLabel: Label by lazy { Label("0", skin) }
+    private val visibleCountLabel: Label by lazy { Label("0", skin) }
 
     override fun show() {
         println("BaseScreen show")
         setupInputProcessor()
         stage.clear()
-        selectBox = SelectBox<String>(skin)
         selectBox.setPosition(0f, stage.height - 30f)
         selectBox.setSize(200f, 30f)
         selectBox.items = game.getScreenNames().toGdxArray()

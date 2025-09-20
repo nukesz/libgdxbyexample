@@ -2,6 +2,7 @@ package com.github.nukesz.samples
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputProcessor
+import com.badlogic.gdx.graphics.Camera
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.PerspectiveCamera
 import com.badlogic.gdx.graphics.VertexAttributes.Usage
@@ -17,30 +18,27 @@ import com.github.nukesz.graphics.clearScreen
 
 class Basic3DSample(game: LibGDXbyExample) : BaseScreen(game) {
 
-    private lateinit var cam: PerspectiveCamera
-    private lateinit var camController: CameraInputController
-    private lateinit var environment: Environment
-    private lateinit var modelBatch: ModelBatch
+    private val cam: Camera by lazy { PerspectiveCamera(67f, Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat()) }
+    private val camController: CameraInputController by lazy { CameraInputController(cam) }
+    private val environment: Environment by lazy {
+        Environment().apply {
+            set(ColorAttribute.createAmbientLight(0.8f, 0.8f, 0.8f, 1f))
+            add(DirectionalLight().set(1f, 1f, 1f, -1f, -0.8f, -0.2f))
+        }
+    }
+    private val modelBatch: ModelBatch by lazy { ModelBatch() }
     private lateinit var model: Model
     private lateinit var instance: ModelInstance
 
     override fun show() {
         super.show()
 
-        environment = Environment().apply {
-            set(ColorAttribute.createAmbientLight(0.8f, 0.8f, 0.8f, 1f))
-            add(DirectionalLight().set(1f, 1f, 1f, -1f, -0.8f, -0.2f))
-        }
-
-        modelBatch = ModelBatch()
-        cam = PerspectiveCamera(67f, Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
         cam.position.set(10f, 10f, 10f)
         cam.lookAt(0f, 0f, 0f)
         cam.near = 1f
         cam.far = 300f
         cam.update()
 
-        camController = CameraInputController(cam)
         setupInputProcessor(camController)
 
         val modelBuilder = ModelBuilder()
@@ -69,6 +67,8 @@ class Basic3DSample(game: LibGDXbyExample) : BaseScreen(game) {
 
     override fun dispose() {
         modelBatch.dispose()
-        model.dispose()
+        if (::model.isInitialized) {
+            model.dispose()
+        }
     }
 }
